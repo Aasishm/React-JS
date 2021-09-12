@@ -1,8 +1,11 @@
 import { useState } from "react";
 
-const useInput = (value) => {
+const useInput = (validate) => {
     const [input, setInput] = useState('');
     const [wasTouched, setTouch] = useState(false);
+
+    const isValid = validate(input);
+    const hasError = !isValid && wasTouched;
 
     const blurHandler = () => setTouch(true);
     const inputHandler = (e) => setInput(e.target.value);
@@ -12,7 +15,7 @@ const useInput = (value) => {
         setTouch(false);
     }
 
-    return {input, wasTouched, value, inputHandler, blurHandler, reset};
+    return {input, isValid, hasError, inputHandler, blurHandler, reset};
 }
 
 export default useInput;
